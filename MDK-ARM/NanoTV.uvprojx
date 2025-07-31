@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32G483xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32G4xx_HAL_Driver/Inc;../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32G4xx/Include;../Drivers/CMSIS/Include;../Components</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32G4xx_HAL_Driver/Inc;../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32G4xx/Include;../Drivers/CMSIS/Include;../Components;..\Components\MicroOS</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -609,6 +609,18 @@
         </Group>
         <Group>
           <GroupName>Components</GroupName>
+          <Files>
+            <File>
+              <FileName>MicroOS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Components\MicroOS\MicroOS.c</FilePath>
+            </File>
+            <File>
+              <FileName>cJSON.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Components\cJson\cJSON.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>

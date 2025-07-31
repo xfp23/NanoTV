@@ -30,7 +30,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "MicroOS.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
