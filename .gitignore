@@ -1,0 +1,54 @@
+
+# Keil MDK-ARM output files
+*.axf
+*.elf
+*.hex
+*.bin
+*.sct
+*.lnp
+*.map
+*.lst
+*.crf
+*.d
+*.o
+*.dep
+*.iex
+*.htm
+*.build_log.htm
+
+# Keil project backup and config files
+*.uvgui.*
+*.uvoptx
+*.uvprojx.bak
+*.bak
+*.uvguix.*
+*.dbi
+*.dep
+*.uvtmp
+*.uvopt
+*.uvproj
+*.uvopt.bak
+*.uvproj.bak
+
+# Keil debug and config folders
+DebugConfig/
+RTE/
+MDK-ARM/NanoTV/
+
+# STM32CubeMX generated files (optional, if you want to keep .ioc only)
+!*.ioc
+
+# User local settings
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.bak
+*.tmp
+~$*
+
+# OS generated files
+Thumbs.db
+Desktop.ini
+.DS_Store
