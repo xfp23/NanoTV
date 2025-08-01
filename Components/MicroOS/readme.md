@@ -1,47 +1,47 @@
-# MicroOS 轻量级任务调度器
+# MicroOS Lightweight Task Scheduler
 
-MicroOS 是一个适用于 STM32 等嵌入式平台的轻量级任务调度器，支持定时任务管理，适合资源受限的单片机项目。
+MicroOS is a lightweight task scheduler designed for embedded platforms such as STM32, supporting periodic task management and suitable for resource-constrained microcontroller projects.
 
-## 主要特性
+## Features
 
-- 静态任务分配，无动态内存分配
-- 支持任务挂起与恢复
-- 任务优先级由 ID 决定，ID 越小优先级越高
-- 适用于 Keil、STM32 HAL 工程
+- Static task allocation, no dynamic memory usage
+- Support for task suspend and resume
+- Task priority determined by ID (lower ID means higher priority)
+- Compatible with Keil and STM32 HAL projects
 
-## 基本 API 用法
+## Basic API Usage
 
-### 1. 初始化 MicroOS
+### 1. Initialize MicroOS
 
 ```c
 MicroOS_Status_t status = MicroOS_Init();
 if (status != MICROOS_OK) {
-    // 处理初始化失败
+    // Handle initialization failure
 }
 ```
 
-### 2. 添加任务
+### 2. Add a Task
 
 ```c
 void MyTask(void *userdata) {
-    // 任务代码
+    // Task code
 }
 
-status = MicroOS_AddTask(0, MyTask, NULL, 100); // ID=0，100ms周期
+status = MicroOS_AddTask(0, MyTask, NULL, 100); // ID=0, period=100ms
 if (status != MICROOS_OK) {
-    // 处理添加失败
+    // Handle add failure
 }
 ```
 
-### 3. 启动调度器
+### 3. Start the Scheduler
 
 ```c
 MicroOS_RunScheduler();
 ```
 
-### 4. 在定时器中断中调用 TickHandler
+### 4. Call TickHandler in Timer Interrupt
 
-通常在 1ms 定时器中断里调用：
+Usually called in a 1ms timer interrupt:
 
 ```c
 void SysTick_Handler(void) {
@@ -49,25 +49,25 @@ void SysTick_Handler(void) {
 }
 ```
 
-### 5. 挂起/恢复任务
+### 5. Suspend/Resume Task
 
 ```c
-MicroOS_SuspendTask(0); // 挂起ID为0的任务
-MicroOS_ResumeTask(0);  // 恢复ID为0的任务
+MicroOS_SuspendTask(0); // Suspend task with ID 0
+MicroOS_ResumeTask(0);  // Resume task with ID 0
 ```
 
-## 任务函数原型
+## Task Function Prototype
 
 ```c
 typedef void (*MicroOS_TaskFunction_t)(void *Userdata);
 ```
 
-## 注意事项
+## Notes
 
-- 任务数量由 `MICROOS_TASK_NUM` 宏定义，默认10个
-- 每个任务 ID 必须唯一且小于 `MICROOS_TASK_NUM`
-- 所有任务在同一个 MicroOS 实例中运行
+- The number of tasks is defined by the macro `MICROOS_TASK_NUM`, default is 10
+- Each task ID must be unique and less than `MICROOS_TASK_NUM`
+- All tasks run in the same MicroOS instance
 
 ---
 
-如需更多详细说明，请参考头文件 `MicroOS.h` 的注释。
+For more details, please refer to the comments in the `MicroOS.h` header file.

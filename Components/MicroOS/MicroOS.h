@@ -4,12 +4,12 @@
 /**
  * @file MicroOS.h
  * @author xfp23
- * @brief 轻量级的系统调度器
- * @note 该调度器仅支持单实例运行，所有任务都在同一个MicroOS实例中运行。
- *       1. 每个任务都有一个唯一的ID，ID可以代表任务的优先级。id越小，优先级越高
- *       2. 任务支持的数量为MICROOS_TASK_NUM，默认为10个任务
- *       3. 没有用堆栈动态分配任务，使用了栈静态分配任务，考虑到嵌入式系统的资源限制以及堆分配造成内存碎片问题。
- *       4. 如果想让系统调度器变快，只需要更改MicroOS_TickHandler在系统时钟中断的调用频率即可。
+ * @brief Lightweight system scheduler
+ * @note This scheduler only supports single-instance operation, all tasks run in the same MicroOS instance.
+ *       1. Each task has a unique ID, which can represent task priority. The smaller the ID, the higher the priority.
+ *       2. The number of supported tasks is defined by MICROOS_TASK_NUM, default is 10.
+ *       3. No dynamic stack allocation for tasks, static allocation is used considering embedded resource constraints and heap fragmentation issues.
+ *       4. To speed up the scheduler, simply increase the frequency of MicroOS_TickHandler calls in the system clock interrupt.
  * @version 0.1
  * @date 2025-07-31
  *
@@ -19,7 +19,6 @@
 #include "stdint.h"
 #include "stdbool.h"
 
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -28,9 +27,9 @@ extern "C"
 // MicroOS version
 #define MICROOS_VERSION_MAJOR "0.0.1"
 
-#define MICROOS_TASK_NUM (10) // 任务数量
+#define MICROOS_TASK_NUM (10) // Number of tasks
 
-// 检查空指针
+// Null pointer check
 #define MICROOS_CHECK_PTR(ptr)    \
 do                            \
 {                             \
@@ -59,87 +58,87 @@ do                                    \
     }                                 \
 } while (0)
 
-// 任务函数
+// Task function prototype
 typedef void (*MicroOS_TaskFunction_t)(void *Userdata);
 
 typedef enum
 {
-    MICROOS_OK = 0,          // 成功
-    MICROOS_ERROR,           // 错误
-    MICROOS_TIMEOUT,         // 超时
-    MICROOS_INVALID_PARAM,   // 无效参数
-    MICROOS_NOT_INITIALIZED, // 未初始化
-} MicroOS_Status_t;          // 状态码
+    MICROOS_OK = 0,          // Success
+    MICROOS_ERROR,           // Error
+    MICROOS_TIMEOUT,         // Timeout
+    MICROOS_INVALID_PARAM,   // Invalid parameter
+    MICROOS_NOT_INITIALIZED, // Not initialized
+} MicroOS_Status_t;          // Status code
 
 typedef struct
 {
     // uint8_t id;
-    MicroOS_TaskFunction_t TaskFunction; // 任务函数指针
-    void *Userdata;                      // 用户数据
-    uint32_t Period;                     // 周期（单位：毫秒）
-    uint32_t LastRunTime;                // 上次运行时间
-    bool IsRunning;                      // 是否运行
+    MicroOS_TaskFunction_t TaskFunction; // Task function pointer
+    void *Userdata;                      // User data
+    uint32_t Period;                     // Period (ms)
+    uint32_t LastRunTime;                // Last run time
+    bool IsRunning;                      // Is running
 } MicroOS_Task_t;
 
 typedef struct
 {
-    MicroOS_Task_t Tasks[MICROOS_TASK_NUM]; // 任务堆栈
-    uint32_t TickCount;                     // MicroOS时钟滴答计数
-    uint32_t MaxTasks;                      // 最大任务数量
-    uint8_t CurrentTaskId;               // 当前任务ID
-	uint8_t TaskNum;                     // 任务数量
+    MicroOS_Task_t Tasks[MICROOS_TASK_NUM]; // Task stack
+    uint32_t TickCount;                     // MicroOS tick counter
+    uint32_t MaxTasks;                      // Maximum number of tasks
+    uint8_t CurrentTaskId;                  // Current task ID
+    uint8_t TaskNum;                        // Number of tasks
 } MicroOS_t;
 
-typedef volatile MicroOS_t* MicroOS_Handle_t;
+typedef volatile MicroOS_t *MicroOS_Handle_t;
 
 /**
- * @brief MicroOS实例
- * 
- * 该实例是MicroOS的唯一实例，所有任务都在这个实例中运行。
+ * @brief MicroOS instance
+ *
+ * This is the only instance of MicroOS, all tasks run in this instance.
  */
 extern MicroOS_Handle_t MicroOS_handle;
 
 /**
- * @brief 初始化MicroOS实例
+ * @brief Initialize MicroOS instance
  *
- * @return MicroOS_Status_t 操作状态码
+ * @return MicroOS_Status_t Operation status code
  */
 extern MicroOS_Status_t MicroOS_Init(void);
 
 /**
- * @brief
+ * @brief Add a task
  *
- * @param id id也可代表优先级,不可以超过 MICROOS_TASK_NUM,也不可以有两个相同的优先级存在
- * @param TaskFunction 任务函数
- * @param Userdata 用户自定义数据
- * @param Period 任务周期
- * @return MicroOS_Status_t 操作状态码
+ * @param id Task ID, also represents priority. Must not exceed MICROOS_TASK_NUM, and IDs must be unique.
+ * @param TaskFunction Task function
+ * @param Userdata User custom data
+ * @param Period Task period
+ * @return MicroOS_Status_t Operation status code
  */
 extern MicroOS_Status_t MicroOS_AddTask(uint8_t id, MicroOS_TaskFunction_t TaskFunction, void *Userdata, uint32_t Period);
 
 /**
- * @brief 启动MicroOS调度器，开始运行任务
+ * @brief Start the MicroOS scheduler and begin running tasks
  *
  */
 extern void MicroOS_RunScheduler(void);
 
 /**
- * @brief 滴答处理函数，通常在系统时钟中断中调用
- * @note 该函数会增加TickCount计数器，MicroOS的任务调度依赖于TickCount。一般在1ms定时器中断调用
+ * @brief Tick handler, usually called in the system clock interrupt
+ * @note This function increases the TickCount counter, which is used for task scheduling. Typically called in a 1ms timer interrupt.
  * @return MicroOS_Status_t
  */
 extern MicroOS_Status_t MicroOS_TickHandler(void);
 
 /**
- * @brief 挂起指定ID的任务
+ * @brief Suspend the task with the specified ID
  *
- * @param id 任务id
+ * @param id Task ID
  * @return MicroOS_Status_t
  */
 extern MicroOS_Status_t MicroOS_SuspendTask(uint8_t id);
 
 /**
- * @brief 恢复指定ID的任务
+ * @brief Resume the task with the specified ID
  *
  * @param id
  * @return MicroOS_Status_t
