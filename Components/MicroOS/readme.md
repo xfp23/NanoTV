@@ -1,13 +1,13 @@
 # MicroOS Lightweight Task Scheduler
 
-MicroOS is a lightweight task scheduler designed for embedded platforms such as STM32, supporting periodic task management and suitable for resource-constrained microcontroller projects.
+MicroOS is a lightweight task scheduler designed for embedded platforms and microcontrollers, supporting periodic task management and suitable for resource-constrained projects. It can be used on any system that provides a time base (such as a timer interrupt).
 
 ## Features
 
 - Static task allocation, no dynamic memory usage
 - Support for task suspend and resume
 - Task priority determined by ID (lower ID means higher priority)
-- Compatible with Keil and STM32 HAL projects
+- Compatible with any platform that can provide a time base (e.g., timer interrupt, system tick)
 
 ## Basic API Usage
 
@@ -36,15 +36,15 @@ if (status != MICROOS_OK) {
 ### 3. Start the Scheduler
 
 ```c
-MicroOS_RunScheduler();
+MicroOS_StartScheduler();
 ```
 
 ### 4. Call TickHandler in Timer Interrupt
 
-Usually called in a 1ms timer interrupt:
+Call `MicroOS_TickHandler()` in your system's timer interrupt (typically every 1ms):
 
 ```c
-void SysTick_Handler(void) {
+void TimerInterruptHandler(void) {
     MicroOS_TickHandler();
 }
 ```
@@ -67,6 +67,7 @@ typedef void (*MicroOS_TaskFunction_t)(void *Userdata);
 - The number of tasks is defined by the macro `MICROOS_TASK_NUM`, default is 10
 - Each task ID must be unique and less than `MICROOS_TASK_NUM`
 - All tasks run in the same MicroOS instance
+- MicroOS is platform-independent and only requires a reliable time base for scheduling
 
 ---
 

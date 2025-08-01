@@ -30,7 +30,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "MicroOS.h"
+#include "flag.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -104,7 +104,10 @@ int main(void)
   MX_RTC_Init();
   MX_SPI3_Init();
   /* USER CODE BEGIN 2 */
-
+  MicroOS_AddTask(0,UserTask_DelayClear,NULL,1);
+  MicroOS_AddTask(1,UserTask_Testdelay,NULL,1000);
+ MicroOS_RunScheduler();
+ 
   /* USER CODE END 2 */
 
   /* Infinite loop */
