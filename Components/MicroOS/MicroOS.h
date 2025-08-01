@@ -87,6 +87,7 @@ typedef struct
     uint32_t TickCount;                     // MicroOS时钟滴答计数
     uint32_t MaxTasks;                      // 最大任务数量
     uint8_t CurrentTaskId;               // 当前任务ID
+	uint8_t TaskNum;                     // 任务数量
 } MicroOS_t;
 
 typedef volatile MicroOS_t* MicroOS_Handle_t;
