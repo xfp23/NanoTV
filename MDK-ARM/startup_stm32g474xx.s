@@ -1,9 +1,9 @@
 ;*******************************************************************************
-;* @File Name          : startup_stm32g483xx.s
+;* @File Name          : startup_stm32g474xx.s
 ;* @Author             : MCD Application Team
 ;* @Brief              : Vector table for MDK-ARM toolchain
 ;*******************************************************************************
-;* Description        : STM32G483xx Mainstream devices vector table for
+;* Description        : STM32G474xx Mainstream devices vector table for
 ;*                      MDK-ARM toolchain.
 ;*                      This module performs:
 ;*                      - Set the initial SP
@@ -145,14 +145,14 @@ __Vectors       DCD     __initial_sp               ; Top of Stack
                 DCD     COMP1_2_3_IRQHandler              ; COMP1, COMP2 and COMP3
                 DCD     COMP4_5_6_IRQHandler              ; COMP4, COMP5 and COMP6
                 DCD     COMP7_IRQHandler                  ; COMP7
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
+                DCD     HRTIM1_Master_IRQHandler          ; HRTIM Master Timer global Interrupts
+                DCD     HRTIM1_TIMA_IRQHandler            ; HRTIM Timer A global Interrupt
+                DCD     HRTIM1_TIMB_IRQHandler            ; HRTIM Timer B global Interrupt
+                DCD     HRTIM1_TIMC_IRQHandler            ; HRTIM Timer C global Interrupt
+                DCD     HRTIM1_TIMD_IRQHandler            ; HRTIM Timer D global Interrupt
+                DCD     HRTIM1_TIME_IRQHandler            ; HRTIM Timer E global Interrupt
+                DCD     HRTIM1_FLT_IRQHandler             ; HRTIM Fault global Interrupt
+                DCD     HRTIM1_TIMF_IRQHandler            ; HRTIM Timer F global Interrupt
                 DCD     CRS_IRQHandler                    ; CRS Interrupt
                 DCD     SAI1_IRQHandler                   ; Serial Audio Interface 1 global interrupt
                 DCD     TIM20_BRK_IRQHandler              ; TIM20 Break, Transition error and Index error
@@ -163,7 +163,7 @@ __Vectors       DCD     __initial_sp               ; Top of Stack
                 DCD     I2C4_EV_IRQHandler                ; I2C4 event
                 DCD     I2C4_ER_IRQHandler                ; I2C4 error
                 DCD     SPI4_IRQHandler                   ; SPI4
-                DCD     AES_IRQHandler                    ; AES global interrupt
+                DCD     0                                 ; Reserved
                 DCD     FDCAN2_IT0_IRQHandler             ; FDCAN2 interrupt line 0
                 DCD     FDCAN2_IT1_IRQHandler             ; FDCAN2 interrupt line 1
                 DCD     FDCAN3_IT0_IRQHandler             ; FDCAN3 interrupt line 0
@@ -312,6 +312,14 @@ Default_Handler PROC
         EXPORT     COMP1_2_3_IRQHandler              [WEAK]
         EXPORT     COMP4_5_6_IRQHandler              [WEAK]
         EXPORT     COMP7_IRQHandler                  [WEAK]
+        EXPORT     HRTIM1_Master_IRQHandler          [WEAK]
+        EXPORT     HRTIM1_TIMA_IRQHandler            [WEAK]
+        EXPORT     HRTIM1_TIMB_IRQHandler            [WEAK]
+        EXPORT     HRTIM1_TIMC_IRQHandler            [WEAK]
+        EXPORT     HRTIM1_TIMD_IRQHandler            [WEAK]
+        EXPORT     HRTIM1_TIME_IRQHandler            [WEAK]
+        EXPORT     HRTIM1_FLT_IRQHandler             [WEAK]
+        EXPORT     HRTIM1_TIMF_IRQHandler            [WEAK]
         EXPORT     CRS_IRQHandler                    [WEAK]
         EXPORT     SAI1_IRQHandler                   [WEAK]
         EXPORT     TIM20_BRK_IRQHandler              [WEAK]
@@ -322,7 +330,6 @@ Default_Handler PROC
         EXPORT     I2C4_EV_IRQHandler                [WEAK]
         EXPORT     I2C4_ER_IRQHandler                [WEAK]
         EXPORT     SPI4_IRQHandler                   [WEAK]
-        EXPORT     AES_IRQHandler                    [WEAK]
         EXPORT     FDCAN2_IT0_IRQHandler             [WEAK]
         EXPORT     FDCAN2_IT1_IRQHandler             [WEAK]
         EXPORT     FDCAN3_IT0_IRQHandler             [WEAK]
@@ -407,6 +414,14 @@ UCPD1_IRQHandler
 COMP1_2_3_IRQHandler
 COMP4_5_6_IRQHandler
 COMP7_IRQHandler
+HRTIM1_Master_IRQHandler
+HRTIM1_TIMA_IRQHandler
+HRTIM1_TIMB_IRQHandler
+HRTIM1_TIMC_IRQHandler
+HRTIM1_TIMD_IRQHandler
+HRTIM1_TIME_IRQHandler
+HRTIM1_FLT_IRQHandler
+HRTIM1_TIMF_IRQHandler
 CRS_IRQHandler
 SAI1_IRQHandler
 TIM20_BRK_IRQHandler
@@ -417,7 +432,6 @@ FPU_IRQHandler
 I2C4_EV_IRQHandler
 I2C4_ER_IRQHandler
 SPI4_IRQHandler
-AES_IRQHandler
 FDCAN2_IT0_IRQHandler
 FDCAN2_IT1_IRQHandler
 FDCAN3_IT0_IRQHandler
